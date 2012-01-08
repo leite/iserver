@@ -1,0 +1,42 @@
+
+#
+NAME =test
+SUFFIX =.exe
+
+# common prefix 
+INCDIR =C:\dev\dev-cpp\include
+SIGARINC =C:\dev\iserver\server\ext\sigar-bin\include
+SIGARLIBDIR =C:\dev\iserver\server\ext\sigar-bin\lib
+SIGARLIB =sigar-x86-winnt
+
+# basic setup
+CC =gcc
+WARN =-Wall
+INCS =-I$(INCDIR) -I$(SIGARINC)
+LIBS =-L$(SIGARLIBDIR) -l$(SIGARLIB)
+OPTS =-O9
+DLL =
+SHARE =-shared
+CFLAGS =$(INCS) $(LIBS)
+CFLAGS_BIN =$(SHARE) $(OPTS) $(LIBS) $(INCS)
+
+# Strip the binary for our prod build
+STRIP =strip
+
+# UPX pack to minimise size for our prod build
+UPX =upx
+UPXFLAG =-9
+
+# 
+$(NAME)$(SUFFIX): $(NAME).o
+	$(CC) -o $@ $^ $(CFLAGS_BIN)
+
+$(NAME).o: $(NAME).c
+	$(CC) -o $@ $^ $(CFLAGS)
+
+release: $(NAME)$(SUFFIX)
+	$(STRIP) $<
+	$(UPX) $(UPXFLAG) $<
+	
+clean:
+	rm *.o *.exe
