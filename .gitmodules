@@ -1,0 +1,6 @@
+[submodule "dep/sigar"]
+	path = dep/sigar
+	url = https://github.com/hyperic/sigar.git
+[submodule "dep/json-c"]
+	path = dep/json-c
+	url = git://github.com/leite/json-c.git
